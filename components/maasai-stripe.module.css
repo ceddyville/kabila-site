@@ -1,0 +1,14 @@
+.stripe {
+  height: 4px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #b83225 0%,
+    #b83225 33%,
+    #e8b030 33%,
+    #e8b030 50%,
+    #0d8c7e 50%,
+    #0d8c7e 75%,
+    #c4720e 75%
+  );
+}

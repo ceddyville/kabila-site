@@ -1,0 +1,128 @@
+.page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.title {
+  font-family: var(--font-heading), serif;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.sub {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-bottom: 32px;
+  line-height: 1.7;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.input,
+.textarea {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: var(--font-body), sans-serif;
+  background: var(--surface);
+  color: var(--ink-dark);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--border-earth);
+}
+
+.textarea {
+  resize: vertical;
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+}
+
+.btn {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: var(--font-body), sans-serif;
+  background: var(--night);
+  color: var(--bg);
+  transition: all 0.2s;
+  align-self: flex-start;
+}
+
+.btn:hover {
+  background: var(--earth);
+  color: #fff;
+}
+
+.error {
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: rgba(184, 50, 37, 0.08);
+  border: 1px solid var(--border-earth);
+  color: var(--earth);
+  font-size: 13px;
+}
+
+.success {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.successTitle {
+  font-family: var(--font-heading), serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--ocean);
+  margin-bottom: 12px;
+}
+
+.successBody {
+  font-size: 15px;
+  color: var(--ink-soft);
+  max-width: 400px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 32px 20px;
+  }
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

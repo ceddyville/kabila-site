@@ -1,0 +1,53 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 22px 20px;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: block;
+}
+
+.card:hover {
+  border-color: var(--border-earth);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px var(--glow-earth);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.name {
+  font-family: var(--font-heading), serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-dark);
+}
+
+.badge {
+  font-size: 9px;
+  color: var(--ocean);
+  border: 1px solid var(--border-ocean);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.endonym {
+  font-size: 14px;
+  color: var(--ink-mid);
+  font-style: italic;
+  margin-bottom: 4px;
+}
+
+.extra {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}

@@ -1,0 +1,139 @@
+.page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.pageTitle {
+  font-family: var(--font-heading), serif;
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.pageSub {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-bottom: 28px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.pageBtn {
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--font-mono), monospace;
+  background: var(--surface);
+  color: var(--ink-mid);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.pageBtn:hover {
+  border-color: var(--border-earth);
+  color: var(--earth);
+}
+
+/* Detail pages */
+.section {
+  margin-bottom: 32px;
+}
+
+.sectionTitle {
+  font-family: var(--font-heading), serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--ink-dark);
+}
+
+.sectionBody {
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.8;
+}
+
+.tagRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--ink-mid);
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 8px 16px;
+  font-size: 14px;
+}
+
+.infoLabel {
+  color: var(--ink-soft);
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding-top: 3px;
+}
+
+.infoValue {
+  color: var(--ink-dark);
+}
+
+.empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  margin-bottom: 20px;
+  font-family: var(--font-mono), monospace;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: var(--earth);
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 32px 20px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+}

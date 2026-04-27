@@ -1,0 +1,282 @@
+/* ── Hero ── */
+.hero {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 90px 48px 70px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  color: var(--earth);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.eyebrowLine {
+  width: 28px;
+  height: 1px;
+  background: var(--earth);
+}
+
+.heading {
+  font-family: var(--font-heading), serif;
+  font-size: clamp(42px, 5.5vw, 68px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+}
+
+.heading em {
+  font-style: italic;
+  color: var(--earth);
+}
+
+.slogan {
+  font-family: var(--font-heading), serif;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 14px;
+  color: var(--ink-dark);
+}
+
+.slogan em {
+  font-style: italic;
+  color: var(--ocean);
+}
+
+.sub {
+  font-size: 15px;
+  color: var(--ink-soft);
+  max-width: 420px;
+  margin-bottom: 36px;
+  font-weight: 300;
+  line-height: 1.75;
+}
+
+.sub strong {
+  color: var(--ink-mid);
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  padding: 11px 24px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body), sans-serif;
+  transition: all 0.2s;
+  background: var(--night);
+  color: var(--bg);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btnPrimary:hover {
+  background: var(--earth);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btnGhost {
+  background: transparent;
+  color: var(--ink-mid);
+  padding: 11px 18px;
+  border-radius: 6px;
+  font-size: 11px;
+  border: 1px solid var(--border-earth);
+  cursor: pointer;
+  font-family: var(--font-mono), monospace;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btnGhost:hover {
+  border-color: var(--earth);
+  color: var(--earth);
+}
+
+/* ── Features ── */
+.features {
+  padding: 0 40px;
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.featGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 18px;
+}
+
+.feat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 20px;
+  transition: all 0.3s;
+}
+
+.feat:hover {
+  border-color: var(--border-earth);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px var(--glow-earth);
+}
+
+.featIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.featTitle {
+  font-family: var(--font-heading), serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.featDesc {
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+/* ── Open Data CTA ── */
+.gdpr {
+  max-width: 900px;
+  margin: 0 auto 60px;
+  padding: 0 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.gdprInner {
+  background: var(--night);
+  border-radius: 14px;
+  padding: 44px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 36px;
+  align-items: center;
+}
+
+.gdprLabel {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.gdprHeading {
+  font-family: var(--font-heading), serif;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--bg);
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+
+.gdprHeading em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+.gdprBody {
+  font-size: 14px;
+  color: rgba(245, 240, 230, 0.55);
+  line-height: 1.7;
+  max-width: 460px;
+}
+
+.gdprTag {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ocean-lt);
+  background: rgba(13, 140, 126, 0.12);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.btnGold {
+  padding: 11px 24px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-body), sans-serif;
+  transition: all 0.2s;
+  background: var(--gold);
+  color: var(--night);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btnGold:hover {
+  background: var(--gold-lt);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 60px 20px 50px;
+  }
+
+  .heading {
+    font-size: 32px;
+  }
+
+  .featGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .gdprInner {
+    grid-template-columns: 1fr;
+    padding: 28px;
+  }
+}
