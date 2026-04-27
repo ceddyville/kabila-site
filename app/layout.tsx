@@ -39,7 +39,7 @@ export default function RootLayout({
       lang="en"
       className={`${heading.variable} ${body.variable} ${mono.variable}`}
     >
-      <body style={{ fontFamily: "var(--font-body), sans-serif" }}>
+      <body suppressHydrationWarning style={{ fontFamily: "var(--font-body), sans-serif" }}>
         <div className="bg-grid" />
         <div className="orb orb-red" />
         <div className="orb orb-teal" />

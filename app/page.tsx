@@ -122,6 +122,29 @@ export default function LandingPage() {
 
       <Divider />
 
+      {/* Community CTA */}
+      <div className={`${styles.gdpr} fade-up delay-3`}>
+        <div className={styles.gdprInner}>
+          <div>
+            <div className={styles.gdprLabel} style={{ color: "var(--ocean-lt)" }}>Community</div>
+            <div className={styles.gdprHeading}>
+              Your people belong <em>here</em>
+            </div>
+            <div className={styles.gdprBody}>
+              If your clan, ethnic group, or lineage system isn&rsquo;t
+              represented &mdash; or if existing data is incomplete &mdash; you
+              can fix that. Every contribution is reviewed, attributed, and
+              preserved.
+            </div>
+          </div>
+          <Link href="/contribute" className={styles.btnGold}>
+            Add Data &rarr;
+          </Link>
+        </div>
+      </div>
+
+      <Divider />
+
       {/* Open Data CTA */}
       <div className={`${styles.gdpr} fade-up delay-3`}>
         <div className={styles.gdprInner}>

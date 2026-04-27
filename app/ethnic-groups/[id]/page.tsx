@@ -122,9 +122,14 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
           <div className={styles.section}>
             <h2 className={styles.sectionTitle}>Sources</h2>
             <ul>
-              {group.sources.map((s, i) => (
-                <li key={i} style={{ fontSize: 13, color: "var(--ink-soft)", marginBottom: 4 }}>{s}</li>
-              ))}
+              {group.sources.map((s: Record<string, unknown>, i: number) => {
+                const parts = [s.title, s.author || s.publisher, s.year].filter(Boolean).join(", ");
+                return (
+                  <li key={i} style={{ fontSize: 13, color: "var(--ink-soft)", marginBottom: 4 }}>
+                    {s.url ? <a href={String(s.url)} target="_blank" rel="noopener noreferrer">{parts}</a> : parts}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         )}
