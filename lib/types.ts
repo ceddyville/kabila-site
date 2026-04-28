@@ -51,7 +51,7 @@ export interface EthnicGroup extends EthnicGroupSummary {
   description?: string;
   origin_story?: string;
   cultural_notes?: Record<string, unknown>;
-  sources?: string[];
+  sources?: (string | Record<string, unknown>)[];
   is_verified?: boolean;
   clan_count?: number;
   sub_group_count?: number;
@@ -78,7 +78,7 @@ export interface Clan extends ClanSummary {
   geographic_area?: string;
   notable_figures?: unknown[];
   related_clans?: number[];
-  sources?: string[];
+  sources?: (string | Record<string, unknown>)[];
   is_verified?: boolean;
   sub_clans?: ClanSummary[];
 }
