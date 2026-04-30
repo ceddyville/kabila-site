@@ -60,6 +60,14 @@ export default function ContributePage() {
   const [clanSelectedSubGroup, setClanSelectedSubGroup] = useState<SubGroupSummary | null>(null);
   const [loadingSubGroups, setLoadingSubGroups] = useState(false);
 
+  /* ── Sub-group tab: ethnic group search + parent sub-group dropdown ── */
+  const [sgEthnicQuery, setSgEthnicQuery] = useState("");
+  const [sgEthnicResults, setSgEthnicResults] = useState<EthnicGroupSummary[]>([]);
+  const [sgSelectedGroup, setSgSelectedGroup] = useState<EthnicGroupSummary | null>(null);
+  const [sgSubGroups, setSgSubGroups] = useState<SubGroupSummary[]>([]);
+  const [sgSelectedParent, setSgSelectedParent] = useState<SubGroupSummary | null>(null);
+  const [sgLoadingSubGroups, setSgLoadingSubGroups] = useState(false);
+
   // Debounced ethnic group search for clan tab
   useEffect(() => {
     if (clanEthnicQuery.length < 2 || clanSelectedGroup) {
@@ -74,6 +82,45 @@ export default function ContributePage() {
     }, 300);
     return () => clearTimeout(timer);
   }, [clanEthnicQuery, clanSelectedGroup]);
+
+  // Debounced ethnic group search for sub-group tab
+  useEffect(() => {
+    if (sgEthnicQuery.length < 2 || sgSelectedGroup) {
+      setSgEthnicResults([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetchEthnicGroups({ search: sgEthnicQuery });
+        setSgEthnicResults(res.results.slice(0, 8));
+      } catch { /* ignore */ }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [sgEthnicQuery, sgSelectedGroup]);
+
+  // Load sub-groups when ethnic group is selected on sub-group tab
+  const selectSgEthnicGroup = useCallback(async (group: EthnicGroupSummary) => {
+    setSgSelectedGroup(group);
+    setSgEthnicQuery(group.name);
+    setSgEthnicResults([]);
+    setSgLoadingSubGroups(true);
+    setSgSelectedParent(null);
+    try {
+      const subGroups = await fetchEthnicGroupSubGroups(group.id);
+      setSgSubGroups(subGroups);
+    } catch {
+      setSgSubGroups([]);
+    } finally {
+      setSgLoadingSubGroups(false);
+    }
+  }, []);
+
+  const clearSgEthnicGroup = useCallback(() => {
+    setSgSelectedGroup(null);
+    setSgEthnicQuery("");
+    setSgSubGroups([]);
+    setSgSelectedParent(null);
+  }, []);
 
   // Load clans + sub-groups when ethnic group is selected
   const selectEthnicGroup = useCallback(async (group: EthnicGroupSummary) => {
@@ -168,8 +215,10 @@ export default function ContributePage() {
     const changes: Record<string, unknown> = {
       name: fd.get("name"),
       endonym: fd.get("endonym") || undefined,
-      ethnic_group_name: fd.get("ethnic_group_name") || undefined,
-      parent_name: fd.get("parent_name") || undefined,
+      ethnic_group_name: sgSelectedGroup?.name || fd.get("ethnic_group_name") || undefined,
+      ethnic_group_id: sgSelectedGroup?.id || undefined,
+      parent_name: sgSelectedParent?.name || fd.get("parent_name") || undefined,
+      parent_id: sgSelectedParent?.id || undefined,
       group_type: fd.get("group_type") || undefined,
       lineage_system: fd.get("lineage_system") || undefined,
       description: fd.get("description") || undefined,
@@ -417,7 +466,45 @@ export default function ContributePage() {
               <div className={styles.row}>
                 <label className={styles.label}>
                   Parent Ethnic Group *
-                  <input name="ethnic_group_name" required className={styles.input} placeholder="e.g. Kalenjin" />
+                  <div className={styles.autocomplete}>
+                    <input
+                      name="ethnic_group_name"
+                      required
+                      className={styles.input}
+                      placeholder="Start typing, e.g. Kalenjin…"
+                      value={sgEthnicQuery}
+                      onChange={(e) => {
+                        setSgEthnicQuery(e.target.value);
+                        if (sgSelectedGroup) clearSgEthnicGroup();
+                      }}
+                      autoComplete="off"
+                    />
+                    {sgSelectedGroup && (
+                      <button
+                        type="button"
+                        className={styles.clearBtn}
+                        onClick={clearSgEthnicGroup}
+                        aria-label="Clear selection"
+                      >
+                        ×
+                      </button>
+                    )}
+                    {sgEthnicResults.length > 0 && (
+                      <ul className={styles.dropdown}>
+                        {sgEthnicResults.map((g) => (
+                          <li key={g.id}>
+                            <button
+                              type="button"
+                              className={styles.dropdownItem}
+                              onClick={() => selectSgEthnicGroup(g)}
+                            >
+                              {g.name}{g.endonym ? ` (${g.endonym})` : ""}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
                 </label>
                 <label className={styles.label}>
                   Type
@@ -432,8 +519,39 @@ export default function ContributePage() {
               <div className={styles.row}>
                 <label className={styles.label}>
                   Parent Sub-group
-                  <input name="parent_name" className={styles.input} placeholder="If nested, e.g. Kipsigis under Kalenjin" />
-                  <span className={styles.hint}>Leave blank if directly under the ethnic group.</span>
+                  {sgSelectedGroup && !sgLoadingSubGroups && sgSubGroups.length > 0 ? (
+                    <>
+                      <select
+                        name="parent_name"
+                        className={styles.input}
+                        value={sgSelectedParent ? String(sgSelectedParent.id) : ""}
+                        onChange={(e) => {
+                          const sg = sgSubGroups.find((s) => String(s.id) === e.target.value);
+                          setSgSelectedParent(sg || null);
+                        }}
+                      >
+                        <option value="">— none (directly under ethnic group) —</option>
+                        {sgSubGroups.map((sg) => (
+                          <option key={sg.id} value={sg.id}>
+                            {sg.name}{sg.endonym ? ` (${sg.endonym})` : ""}
+                          </option>
+                        ))}
+                      </select>
+                      <span className={styles.hint}>Select a parent if this is nested under an existing sub-group.</span>
+                    </>
+                  ) : sgSelectedGroup && sgLoadingSubGroups ? (
+                    <input className={styles.input} disabled placeholder="Loading sub-groups…" />
+                  ) : sgSelectedGroup && sgSubGroups.length === 0 ? (
+                    <>
+                      <input name="parent_name" className={styles.input} placeholder="No existing sub-groups — type a name if nested" />
+                      <span className={styles.hint}>No sub-groups found for {sgSelectedGroup.name}. Leave blank if directly under the ethnic group.</span>
+                    </>
+                  ) : (
+                    <>
+                      <input name="parent_name" className={styles.input} placeholder="Select an ethnic group first, or type a name" />
+                      <span className={styles.hint}>Leave blank if directly under the ethnic group.</span>
+                    </>
+                  )}
                 </label>
                 <label className={styles.label}>
                   Lineage System
