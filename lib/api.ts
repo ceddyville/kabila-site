@@ -30,7 +30,16 @@ async function post<T>(path: string, body: unknown): Promise<T> {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
-  if (!res.ok) throw new Error(`API ${res.status}: ${path}`);
+  if (!res.ok) {
+    let detail = "";
+    try {
+      const errBody = await res.json();
+      detail = Object.entries(errBody)
+        .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(", ") : v}`)
+        .join("; ");
+    } catch { /* ignore parse errors */ }
+    throw new Error(detail || `API ${res.status}: ${path}`);
+  }
   return res.json();
 }
 

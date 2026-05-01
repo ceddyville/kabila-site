@@ -44,6 +44,7 @@ const CORRECTION_TARGETS = [
 export default function ContributePage() {
   const [tab, setTab] = useState<Tab>("group");
   const [submitted, setSubmitted] = useState(false);
+  const [submittedName, setSubmittedName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -175,9 +176,11 @@ export default function ContributePage() {
         justification,
         sources: [],
       });
+      setSubmittedName(contributor_name || "");
       setSubmitted(true);
-    } catch {
-      setError("Failed to submit. The API may be unavailable.");
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "";
+      setError(msg || "Failed to submit. The API may be unavailable.");
     } finally {
       setLoading(false);
     }
@@ -301,10 +304,18 @@ export default function ContributePage() {
         <Nav />
         <div className={styles.page}>
           <div className={styles.success}>
-            <h2 className={styles.successTitle}>Thank you!</h2>
+            <h2 className={styles.successTitle}>
+              {submittedName ? `Thank you, ${submittedName}!` : "Thank you!"}
+            </h2>
             <p className={styles.successBody}>
               Your contribution has been submitted for review. Our team will
               verify the information and update the database accordingly.
+            </p>
+            <p className={styles.successBody} style={{ marginTop: 8, fontStyle: "italic" }}>
+              {submittedName ? "We appreciate your help" : "We appreciate your help"} in preserving African heritage.
+            </p>
+            <p className={styles.successBody} style={{ marginTop: 16 }}>
+              <strong>— The Kabila Team</strong>
             </p>
             <button
               className={styles.btn}
@@ -417,8 +428,8 @@ export default function ContributePage() {
                     <input name="contributor_name" className={styles.input} placeholder="How you'd like to be credited" />
                   </label>
                   <label className={styles.label}>
-                    Email
-                    <input name="contributor_email" type="email" className={styles.input} placeholder="Optional — for admin follow-up" />
+                    Email *
+                    <input name="contributor_email" type="email" required className={styles.input} placeholder="For admin follow-up" />
                   </label>
                 </div>
               </fieldset>
@@ -602,8 +613,8 @@ export default function ContributePage() {
                     <input name="contributor_name" className={styles.input} placeholder="How you'd like to be credited" />
                   </label>
                   <label className={styles.label}>
-                    Email
-                    <input name="contributor_email" type="email" className={styles.input} placeholder="Optional — for admin follow-up" />
+                    Email *
+                    <input name="contributor_email" type="email" required className={styles.input} placeholder="For admin follow-up" />
                   </label>
                 </div>
               </fieldset>
@@ -817,8 +828,8 @@ export default function ContributePage() {
                     <input name="contributor_name" className={styles.input} placeholder="How you'd like to be credited" />
                   </label>
                   <label className={styles.label}>
-                    Email
-                    <input name="contributor_email" type="email" className={styles.input} placeholder="Optional — for admin follow-up" />
+                    Email *
+                    <input name="contributor_email" type="email" required className={styles.input} placeholder="For admin follow-up" />
                   </label>
                 </div>
               </fieldset>
@@ -901,8 +912,8 @@ export default function ContributePage() {
                     <input name="contributor_name" className={styles.input} placeholder="How you'd like to be credited" />
                   </label>
                   <label className={styles.label}>
-                    Email
-                    <input name="contributor_email" type="email" className={styles.input} placeholder="Optional — for admin follow-up" />
+                    Email *
+                    <input name="contributor_email" type="email" required className={styles.input} placeholder="For admin follow-up" />
                   </label>
                 </div>
               </fieldset>
