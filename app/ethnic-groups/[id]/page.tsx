@@ -1,10 +1,9 @@
 import Link from "next/link";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
-import DetailHeader from "@/components/detail-header";
-import GroupCard from "@/components/group-card";
-import { fetchEthnicGroup, fetchEthnicGroupClans, fetchEthnicGroupSubGroups } from "@/lib/api";
-import styles from "../../browse.module.css";
+import { fetchEthnicGroup, fetchEthnicGroupClans, fetchEthnicGroupSubGroups, fetchLanguage } from "@/lib/api";
+import type { ClanSummary, SubGroupSummary } from "@/lib/types";
+import s from "../../detail.module.css";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -15,8 +14,8 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
   const numId = parseInt(id, 10);
 
   let group;
-  let clans: { id: number; name: string; endonym?: string; ethnic_group_name?: string }[] = [];
-  let subGroups: { id: number; name: string; endonym?: string; ethnic_group_name?: string }[] = [];
+  let clans: ClanSummary[] = [];
+  let subGroups: SubGroupSummary[] = [];
 
   try {
     [group, clans, subGroups] = await Promise.all([
@@ -28,114 +27,245 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
     return (
       <>
         <Nav />
-        <div className={styles.page}>
-          <p className={styles.empty}>Ethnic group not found. The API may be unavailable.</p>
-          <Link href="/ethnic-groups" className={styles.backLink}>&larr; Back to groups</Link>
+        <div className={s.errorPage}>
+          <p className={s.errorText}>Ethnic group not found. The API may be unavailable.</p>
+          <Link href="/ethnic-groups" className={s.backLink}>&larr; Back to groups</Link>
         </div>
         <Footer />
       </>
     );
   }
 
+  const countries = group.countries?.map((c) => c.name) ?? [];
+  const langName = group.languages?.primary?.name;
+  const langId = group.languages?.primary?.id;
+  let langFamily = "";
+  let langFamilyChain: string[] = [];
+  if (langId) {
+    try {
+      const lang = await fetchLanguage(langId);
+      langFamily = lang.family_name ?? "";
+      langFamilyChain = lang.family_chain ?? [];
+    } catch { /* ignore */ }
+  }
+  const altNames = group.alternate_names?.filter(Boolean) ?? [];
+  const topLevelSubGroups = subGroups.filter((sg) => !sg.parent_name);
+  const culturalNotes = group.cultural_notes ?? {};
+  const cultureEntries = Object.entries(culturalNotes).filter(
+    ([, v]) => v != null && v !== "",
+  );
+
   return (
     <>
       <Nav />
-      <div className={styles.page}>
-        <Link href="/ethnic-groups" className={styles.backLink}>&larr; All ethnic groups</Link>
 
-        <DetailHeader
-          title={group.name}
-          subtitle={group.endonym}
-          badge={group.countries?.[0]?.name}
-        />
-
-        <div className={styles.infoGrid}>
-          {group.lineage_system_display && (
-            <>
-              <div className={styles.infoLabel}>Lineage</div>
-              <div className={styles.infoValue}>{group.lineage_system_display}</div>
-            </>
-          )}
-          {group.population_estimate && (
-            <>
-              <div className={styles.infoLabel}>Population</div>
-              <div className={styles.infoValue}>{group.population_estimate.toLocaleString()}</div>
-            </>
-          )}
-          {group.languages?.primary && (
-            <>
-              <div className={styles.infoLabel}>Language</div>
-              <div className={styles.infoValue}>{group.languages.primary.name}</div>
-            </>
-          )}
-          {group.community_type_display && (
-            <>
-              <div className={styles.infoLabel}>Type</div>
-              <div className={styles.infoValue}>{group.community_type_display}</div>
-            </>
-          )}
-        </div>
-
-        {group.description && (
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Description</h2>
-            <p className={styles.sectionBody}>{group.description}</p>
-          </div>
-        )}
-
-        {group.origin_story && (
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Origin Story</h2>
-            <p className={styles.sectionBody}>{group.origin_story}</p>
-          </div>
-        )}
-
-        {clans.length > 0 && (
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Clans ({clans.length})</h2>
-            <div className={styles.grid}>
-              {clans.map((c) => (
-                <GroupCard
-                  key={c.id}
-                  id={c.id}
-                  name={c.name}
-                  endonym={c.endonym}
-                  href={`/clans/${c.id}`}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {subGroups.length > 0 && (
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Sub-groups ({subGroups.length})</h2>
-            <div className={styles.tagRow}>
-              {subGroups.map((sg) => (
-                <span key={sg.id} className={styles.tag}>{sg.name}</span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {group.sources && group.sources.length > 0 && (
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Sources</h2>
-            <ul>
-              {group.sources.map((s, i) => {
-                if (typeof s === "string") return <li key={i} style={{ fontSize: 13, color: "var(--ink-soft)", marginBottom: 4 }}>{s}</li>;
-                const obj = s as Record<string, unknown>;
-                const parts = [obj.title, obj.author || obj.publisher, obj.year].filter(Boolean).join(", ");
-                return (
-                  <li key={i} style={{ fontSize: 13, color: "var(--ink-soft)", marginBottom: 4 }}>
-                    {obj.url ? <a href={String(obj.url)} target="_blank" rel="noopener noreferrer">{parts}</a> : parts}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
+      {/* Breadcrumb */}
+      <div className={s.breadcrumb}>
+        <Link href="/">Kabila</Link>
+        <span className={s.breadcrumbSep}>›</span>
+        <Link href="/ethnic-groups">Ethnic groups</Link>
+        <span className={s.breadcrumbSep}>›</span>
+        <span className={s.breadcrumbCurrent}>{group.name}</span>
       </div>
+
+      {/* Dark hero */}
+      <div className={s.hero}>
+        <div className={s.heroInner}>
+          <div className={s.heroEyebrow}>
+            <span className={s.eyebrowLine} />
+            {group.community_type_display ?? "Indigenous"}
+          </div>
+          <div className={s.heroName}>{group.name}</div>
+          {group.endonym && <div className={s.heroEndonym}>{group.endonym}</div>}
+          {altNames.length > 0 && (
+            <div className={s.heroAlt}>
+              Also known as: <em>{altNames.join(", ")}</em>
+            </div>
+          )}
+          <div className={s.heroTags}>
+            {countries.map((c) => (
+              <span key={c} className={s.heroTag}><strong>{c}</strong></span>
+            ))}
+            {group.lineage_system_display && (
+              <span className={s.heroTag}><strong>{group.lineage_system_display}</strong> lineage</span>
+            )}
+            {langName && (
+              <span className={s.heroTag}>{langName}</span>
+            )}
+            {topLevelSubGroups.length > 0 ? (
+              <span className={s.heroTag}>{topLevelSubGroups.length} sub-groups</span>
+            ) : clans.length > 0 ? (
+              <span className={s.heroTag}>{clans.length} clans documented</span>
+            ) : null}
+          </div>
+        </div>
+      </div>
+
+      {/* Meta strip */}
+      <div className={s.metaStrip}>
+        <div className={s.metaStripInner}>
+          <div className={s.metaCell}>
+            <div className={s.metaLabel}>Language</div>
+            <div className={s.metaVal}>{langName ?? "—"}</div>
+          </div>
+          <div className={s.metaCell}>
+            <div className={s.metaLabel}>Language family</div>
+            <div className={s.metaValMono}>{langFamilyChain.length > 0 ? langFamilyChain.join(" › ") : "—"}</div>
+          </div>
+          <div className={s.metaCell}>
+            <div className={s.metaLabel}>Lineage system</div>
+            <div className={s.metaVal}>{group.lineage_system_display ?? "—"}</div>
+          </div>
+          <div className={s.metaCell}>
+            <div className={s.metaLabel}>Population</div>
+            <div className={s.metaVal}>
+              {group.population_estimate
+                ? group.population_estimate.toLocaleString()
+                : "—"}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Body: 2-column */}
+      <div className={s.bodyWrap}>
+        <div className={s.contentGrid}>
+          {/* ── Main column ── */}
+          <div>
+            {group.description && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>About the {group.name}</div>
+                <p className={s.sectionBody}>{group.description}</p>
+              </section>
+            )}
+
+            {group.origin_story && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Origin story &amp; oral tradition</div>
+                <div className={s.originBlock}>{group.origin_story}</div>
+              </section>
+            )}
+
+            {cultureEntries.length > 0 && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Cultural notes</div>
+                <div className={s.culturalTable}>
+                  {cultureEntries.map(([k, v]) => (
+                    <div key={k} className={s.culturalRow}>
+                      <div className={s.culturalLabel}>{k}</div>
+                      <div className={s.culturalVal}>{String(v)}</div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {topLevelSubGroups.length > 0 && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Sub-groups ({topLevelSubGroups.length})</div>
+                <div className={s.clanGrid}>
+                  {topLevelSubGroups.map((sg) => (
+                    <Link key={sg.id} href={`/sub-groups/${sg.id}`} className={s.clanCard}>
+                      <div className={s.clanCardName}>{sg.name}</div>
+                      {sg.endonym && <div className={s.clanCardEndonym}>{sg.endonym}</div>}
+                      <span className={s.clanCardArrow}>→</span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {clans.length > 0 && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Clans ({clans.length})</div>
+                <div className={s.clanGrid}>
+                  {clans.map((c) => (
+                    <Link key={c.id} href={`/clans/${c.id}`} className={s.clanCard}>
+                      <div className={s.clanCardName}>{c.name}</div>
+                      {c.endonym && <div className={s.clanCardEndonym}>{c.endonym}</div>}
+                      <span className={s.clanCardArrow}>→</span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {group.sources && group.sources.length > 0 && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Sources</div>
+                <ul style={{ paddingLeft: 18 }}>
+                  {group.sources.map((src, i) => {
+                    if (typeof src === "string") return <li key={i} style={{ fontSize: 13, color: "var(--ink-soft)", marginBottom: 4 }}>{src}</li>;
+                    const obj = src as Record<string, unknown>;
+                    const parts = [obj.title, obj.author || obj.publisher, obj.year].filter(Boolean).join(", ");
+                    return (
+                      <li key={i} style={{ fontSize: 13, color: "var(--ink-soft)", marginBottom: 4 }}>
+                        {obj.url ? <a href={String(obj.url)} target="_blank" rel="noopener noreferrer" className={s.inlineLink}>{parts}</a> : parts}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </section>
+            )}
+          </div>
+
+          {/* ── Sidebar ── */}
+          <div>
+            <div className={s.sidebarCard}>
+              <div className={s.sidebarCardHeader}>At a glance</div>
+              <div className={s.sidebarCardBody}>
+                <div className={s.sidebarRow}>
+                  <span className={s.sidebarKey}>Group name</span>
+                  <span className={s.sidebarVal}>{group.name}</span>
+                </div>
+                {group.endonym && (
+                  <div className={s.sidebarRow}>
+                    <span className={s.sidebarKey}>Endonym</span>
+                    <span className={s.sidebarVal}>{group.endonym}</span>
+                  </div>
+                )}
+                {langName && (
+                  <div className={s.sidebarRow}>
+                    <span className={s.sidebarKey}>Language</span>
+                    <span className={s.sidebarVal}>{langName}</span>
+                  </div>
+                )}
+                {group.lineage_system_display && (
+                  <div className={s.sidebarRow}>
+                    <span className={s.sidebarKey}>Lineage</span>
+                    <span className={s.sidebarVal}>{group.lineage_system_display}</span>
+                  </div>
+                )}
+                {group.population_estimate && (
+                  <div className={s.sidebarRow}>
+                    <span className={s.sidebarKey}>Population</span>
+                    <span className={s.sidebarVal}>{group.population_estimate.toLocaleString()}</span>
+                  </div>
+                )}
+                <div className={s.sidebarRow}>
+                  <span className={s.sidebarKey}>Clans</span>
+                  <span className={s.sidebarVal}>{clans.length} documented</span>
+                </div>
+                <div className={s.sidebarRow}>
+                  <span className={s.sidebarKey}>Sub-groups</span>
+                  <span className={s.sidebarVal}>{topLevelSubGroups.length} documented</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={s.contributeCard}>
+              <div className={s.contributeCardTitle}>Know more?</div>
+              <div className={s.contributeCardBody}>
+                Missing a clan, incorrect lineage data, or a richer origin story? Submit a correction or addition.
+              </div>
+              <Link href="/contribute" className={s.contributeBtn}>
+                Contribute data →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Footer />
     </>
   );

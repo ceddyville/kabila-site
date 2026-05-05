@@ -1,9 +1,16 @@
 .footer {
   border-top: 1px solid var(--border);
-  padding: 20px 40px;
+  padding: 24px 40px 20px;
   text-align: center;
   position: relative;
   z-index: 1;
+}
+
+.stripeWrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .text {

@@ -23,6 +23,7 @@ export interface LanguageSummary {
 
 export interface Language extends LanguageSummary {
   family_name?: string;
+  family_chain?: string[];
   dialects?: string[];
   writing_systems?: string[];
   approx_speakers?: number;
@@ -89,6 +90,44 @@ export interface SubGroupSummary {
   endonym?: string;
   ethnic_group_name?: string;
   parent_name?: string;
+}
+
+export interface SubGroup extends SubGroupSummary {
+  alternate_names?: string[];
+  ethnic_group?: EthnicGroupSummary;
+  group_type?: string;
+  group_type_display?: string;
+  language?: { id: number; name: string };
+  lineage_system?: string;
+  lineage_system_display?: string;
+  description?: string;
+  origin_story?: string;
+  population_estimate?: number;
+  sources?: (string | Record<string, unknown>)[];
+  is_verified?: boolean;
+  clan_count?: number;
+  child_count?: number;
+}
+
+export interface TraditionalAuthority {
+  id: number;
+  name: string;
+  alternate_names?: string[];
+  governance_type?: string;
+  governance_type_display?: string;
+  est_founding_year?: number;
+  est_end_year?: number;
+  territory_countries?: { id: number; name: string }[];
+  ethnic_groups?: EthnicGroupSummary[];
+  ruling_dynasty?: string;
+  capital?: string;
+  current_leader?: string;
+  current_leader_title?: string;
+  is_ceremonial?: boolean;
+  description?: string;
+  languages?: { id: number; name: string }[];
+  sources?: (string | Record<string, unknown>)[];
+  is_verified?: boolean;
 }
 
 export interface Contribution {

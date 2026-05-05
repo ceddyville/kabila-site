@@ -19,24 +19,24 @@ function KabilaIcon() {
 
 export default function Nav() {
   return (
-    <nav className={styles.nav} style={{ position: "relative" }}>
-      <Link href="/" className={styles.brand}>
-        <div className={styles.mark}>
-          <KabilaIcon />
+    <header className={styles.header}>
+      <nav className={styles.nav}>
+        <Link href="/" className={styles.brand}>
+          <div className={styles.mark}>
+            <KabilaIcon />
+          </div>
+          <span className={styles.name}>Kabila</span>
+          <span className={styles.tag}>African Peoples &amp; Lineages</span>
+        </Link>
+        <div className={styles.links}>
+          <Link href="/ethnic-groups" className={styles.link}>Ethnic Groups</Link>
+          <Link href="/clans" className={styles.link}>Clans</Link>
+          <Link href="/languages" className={styles.link}>Languages</Link>
+          <Link href="/docs" className={styles.link}>API</Link>
+          <Link href="/contribute" className={styles.btnPrimary}>Contribute</Link>
         </div>
-        <span className={styles.name}>Kabila</span>
-        <span className={styles.tag}>African Peoples &amp; Lineages</span>
-      </Link>
-      <div className={styles.links}>
-        <Link href="/ethnic-groups" className={styles.link}>Ethnic Groups</Link>
-        <Link href="/clans" className={styles.link}>Clans</Link>
-        <Link href="/languages" className={styles.link}>Languages</Link>
-        <Link href="/docs" className={styles.link}>API</Link>
-        <Link href="/contribute" className={styles.btnPrimary}>Contribute</Link>
-      </div>
-      <div className={styles.stripeWrap}>
-        <MaasaiStripe />
-      </div>
-    </nav>
+      </nav>
+      <MaasaiStripe />
+    </header>
   );
 }

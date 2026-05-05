@@ -6,8 +6,10 @@ import type {
   LanguageFamily,
   ClanSummary,
   SubGroupSummary,
+  SubGroup,
   Country,
   Contribution,
+  TraditionalAuthority,
 } from "./types";
 
 const API = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8001/api/v1";
@@ -81,6 +83,34 @@ export function fetchClans(params?: Record<string, string>) {
 
 export function fetchClan(id: number) {
   return get<Clan>(`/clans/${id}/`);
+}
+
+export function fetchSubGroups(params?: Record<string, string>) {
+  return get<PaginatedResponse<SubGroup>>("/sub-groups/", params);
+}
+
+export function fetchSubGroup(id: number) {
+  return get<SubGroup>(`/sub-groups/${id}/`);
+}
+
+export function fetchSubGroupClans(id: number) {
+  return get<ClanSummary[]>(`/sub-groups/${id}/clans/`);
+}
+
+export function fetchSubGroupChildren(id: number) {
+  return get<SubGroupSummary[]>(`/sub-groups/${id}/sub-groups/`);
+}
+
+export function fetchTraditionalAuthorities(params?: Record<string, string>) {
+  return get<PaginatedResponse<TraditionalAuthority>>("/traditional-authorities/", params);
+}
+
+export function fetchTraditionalAuthority(id: number) {
+  return get<TraditionalAuthority>(`/traditional-authorities/${id}/`);
+}
+
+export function fetchCountry(id: number) {
+  return get<Country>(`/countries/${id}/`);
 }
 
 export function submitContribution(data: Omit<Contribution, "id" | "status" | "created_at" | "reviewed_at" | "reviewer_notes">) {
