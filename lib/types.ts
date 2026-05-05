@@ -12,6 +12,9 @@ export interface LanguageFamily {
   name: string;
   description?: string;
   parent_name?: string;
+  classification?: string;
+  children?: LanguageFamily[] | null;
+  languages?: { id: number; name: string }[] | null;
 }
 
 export interface LanguageSummary {

@@ -137,3 +137,41 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Language Family cards */
+.familyCard {
+  display: block;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.familyCard:hover {
+  border-color: var(--border-earth);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.familyCardName {
+  font-family: var(--font-heading), serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink-dark);
+  margin-bottom: 6px;
+}
+
+.familyCardDesc {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.familyCardMeta {
+  font-size: 11px;
+  font-family: var(--font-mono), monospace;
+  color: var(--laterite);
+}

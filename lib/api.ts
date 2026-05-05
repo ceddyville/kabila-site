@@ -53,12 +53,20 @@ export function fetchLanguageFamilies() {
   return get<PaginatedResponse<LanguageFamily>>("/language-families/");
 }
 
+export function fetchLanguageFamily(id: number) {
+  return get<LanguageFamily>(`/language-families/${id}/`);
+}
+
 export function fetchLanguages(params?: Record<string, string>) {
   return get<PaginatedResponse<Language>>("/languages/", params);
 }
 
 export function fetchLanguage(id: number) {
   return get<Language>(`/languages/${id}/`);
+}
+
+export function fetchLanguageEthnicGroups(id: number) {
+  return get<EthnicGroupSummary[]>(`/languages/${id}/ethnic-groups/`);
 }
 
 export function fetchEthnicGroups(params?: Record<string, string>) {
