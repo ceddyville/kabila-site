@@ -591,6 +591,36 @@
   text-decoration: underline;
 }
 
+/* ── PHRASE TABLE ── */
+.phraseTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 12px;
+}
+.phraseTable th,
+.phraseTable td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.phraseTable thead th {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.phraseEn {
+  color: var(--ink-mid);
+  width: 45%;
+}
+.phraseLocal {
+  color: var(--ink-dark);
+  font-weight: 500;
+  font-style: italic;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .breadcrumb {

@@ -32,6 +32,22 @@ export interface Language extends LanguageSummary {
   approx_speakers?: number;
   countries?: { id: number; name: string }[];
   notes?: string;
+  pronunciation?: string;
+  guthrie_code?: string;
+  glottolog_code?: string;
+  native_region?: string;
+  tone_system?: string;
+  word_order?: string;
+  phonology_notes?: string;
+  grammar_notes?: string;
+  sample_phrases?: { english: string; local: string }[];
+  related_languages?: string[];
+  demonyms?: {
+    person?: string;
+    people?: string;
+    language?: string;
+    country?: string;
+  };
 }
 
 export interface EthnicGroupSummary {

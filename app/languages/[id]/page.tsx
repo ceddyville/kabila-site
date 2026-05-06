@@ -37,6 +37,9 @@ export default async function LanguageDetailPage({ params }: Props) {
   const familyChain = lang.family_chain ?? [];
   const countries = lang.countries ?? [];
   const dialects = lang.dialects ?? [];
+  const samplePhrases = lang.sample_phrases ?? [];
+  const relatedLangs = lang.related_languages ?? [];
+  const demonyms = lang.demonyms ?? {};
 
   return (
     <>
@@ -67,6 +70,9 @@ export default async function LanguageDetailPage({ params }: Props) {
           <h1 className={s.heroName}>{lang.name}</h1>
           {lang.endonym && lang.endonym !== lang.name && (
             <div className={s.heroEndonym}>{lang.endonym}</div>
+          )}
+          {lang.pronunciation && (
+            <div className={s.heroEndonym}>{lang.pronunciation}</div>
           )}
           <div className={s.heroTags}>
             {familyChain.length > 0 && (
@@ -112,6 +118,18 @@ export default async function LanguageDetailPage({ params }: Props) {
             <div className={s.metaLabel}>ISO code</div>
             <div className={s.metaValMono}>{lang.iso_639_code ?? "—"}</div>
           </div>
+          {lang.guthrie_code && (
+            <div className={s.metaCell}>
+              <div className={s.metaLabel}>Guthrie</div>
+              <div className={s.metaValMono}>{lang.guthrie_code}</div>
+            </div>
+          )}
+          {lang.native_region && (
+            <div className={s.metaCell}>
+              <div className={s.metaLabel}>Region</div>
+              <div className={s.metaVal}>{lang.native_region}</div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -124,6 +142,96 @@ export default async function LanguageDetailPage({ params }: Props) {
               <section className={s.section}>
                 <div className={s.sectionHeading}>About {lang.name}</div>
                 <div className={s.originBlock}>{lang.notes}</div>
+              </section>
+            )}
+
+            {/* Demonyms table */}
+            {Object.keys(demonyms).length > 0 && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Naming</div>
+                <table className={s.phraseTable}>
+                  <tbody>
+                    {demonyms.person && (
+                      <tr>
+                        <td className={s.phraseEn}>Person</td>
+                        <td className={s.phraseLocal}>{demonyms.person}</td>
+                      </tr>
+                    )}
+                    {demonyms.people && (
+                      <tr>
+                        <td className={s.phraseEn}>People</td>
+                        <td className={s.phraseLocal}>{demonyms.people}</td>
+                      </tr>
+                    )}
+                    {demonyms.language && (
+                      <tr>
+                        <td className={s.phraseEn}>Language</td>
+                        <td className={s.phraseLocal}>{demonyms.language}</td>
+                      </tr>
+                    )}
+                    {demonyms.country && (
+                      <tr>
+                        <td className={s.phraseEn}>Country</td>
+                        <td className={s.phraseLocal}>{demonyms.country}</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </section>
+            )}
+
+            {/* Phonology */}
+            {(lang.phonology_notes || lang.tone_system) && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Phonology</div>
+                {lang.tone_system && (
+                  <p className={s.sectionBody}>
+                    <strong>Tone system:</strong> {lang.tone_system}
+                  </p>
+                )}
+                {lang.phonology_notes && (
+                  <div className={s.originBlock}>{lang.phonology_notes}</div>
+                )}
+              </section>
+            )}
+
+            {/* Grammar */}
+            {(lang.grammar_notes || lang.word_order) && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Grammar</div>
+                {lang.word_order && (
+                  <p className={s.sectionBody}>
+                    <strong>Word order:</strong> {lang.word_order}
+                  </p>
+                )}
+                {lang.grammar_notes && (
+                  <div className={s.originBlock}>{lang.grammar_notes}</div>
+                )}
+              </section>
+            )}
+
+            {/* Sample phrases */}
+            {samplePhrases.length > 0 && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>
+                  Sample phrases ({samplePhrases.length})
+                </div>
+                <table className={s.phraseTable}>
+                  <thead>
+                    <tr>
+                      <th className={s.phraseEn}>English</th>
+                      <th className={s.phraseLocal}>{lang.name}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {samplePhrases.map((p, i) => (
+                      <tr key={i}>
+                        <td className={s.phraseEn}>{p.english}</td>
+                        <td className={s.phraseLocal}>{p.local}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </section>
             )}
 
@@ -193,6 +301,18 @@ export default async function LanguageDetailPage({ params }: Props) {
                     <span className={s.sidebarVal}>{lang.iso_639_code}</span>
                   </div>
                 )}
+                {lang.guthrie_code && (
+                  <div className={s.sidebarRow}>
+                    <span className={s.sidebarKey}>Guthrie</span>
+                    <span className={s.sidebarVal}>{lang.guthrie_code}</span>
+                  </div>
+                )}
+                {lang.glottolog_code && (
+                  <div className={s.sidebarRow}>
+                    <span className={s.sidebarKey}>Glottolog</span>
+                    <span className={s.sidebarVal}>{lang.glottolog_code}</span>
+                  </div>
+                )}
                 {lang.family_name && (
                   <div className={s.sidebarRow}>
                     <span className={s.sidebarKey}>Family</span>
@@ -211,8 +331,27 @@ export default async function LanguageDetailPage({ params }: Props) {
                     <span className={s.sidebarVal}>~{lang.approx_speakers.toLocaleString()}</span>
                   </div>
                 )}
+                {lang.word_order && (
+                  <div className={s.sidebarRow}>
+                    <span className={s.sidebarKey}>Word order</span>
+                    <span className={s.sidebarVal}>{lang.word_order}</span>
+                  </div>
+                )}
               </div>
             </div>
+
+            {relatedLangs.length > 0 && (
+              <div className={s.sidebarCard}>
+                <div className={s.sidebarCardHeader}>Related languages</div>
+                <div className={s.sidebarCardBody}>
+                  {relatedLangs.map((rl, i) => (
+                    <div key={i} className={s.sidebarRow}>
+                      <span className={s.sidebarVal}>{rl}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className={s.contributeCard}>
               <div className={s.contributeTitle}>Help improve this data</div>
