@@ -54,7 +54,7 @@ export default async function LanguagesPage({ searchParams }: Props) {
                 l.iso_639_code ? `ISO: ${l.iso_639_code}` : "",
                 l.approx_speakers ? `${(l.approx_speakers / 1_000_000).toFixed(1)}M speakers` : "",
               ].filter(Boolean).join(" · ")}
-              href={`/languages`}
+              href={`/languages/${l.id}`}
             />
           ))}
         </div>
