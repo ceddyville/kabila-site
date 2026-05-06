@@ -89,7 +89,10 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
             {group.lineage_system_display && (
               <span className={s.heroTag}><strong>{group.lineage_system_display}</strong> lineage</span>
             )}
-            {langName && (
+            {langName && langId && (
+              <Link href={`/languages/${langId}`} className={s.heroTag}>{langName}</Link>
+            )}
+            {langName && !langId && (
               <span className={s.heroTag}>{langName}</span>
             )}
             {topLevelSubGroups.length > 0 ? (
@@ -106,7 +109,11 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
         <div className={s.metaStripInner}>
           <div className={s.metaCell}>
             <div className={s.metaLabel}>Language</div>
-            <div className={s.metaVal}>{langName ?? "—"}</div>
+            <div className={s.metaVal}>
+              {langName && langId ? (
+                <Link href={`/languages/${langId}`}>{langName}</Link>
+              ) : (langName ?? "—")}
+            </div>
           </div>
           <div className={s.metaCell}>
             <div className={s.metaLabel}>Language family</div>
