@@ -301,6 +301,65 @@
   color: var(--ink-mid);
 }
 
+/* Cultural notes nested rendering */
+.cultureList {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cultureNested {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cultureNestedRow {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.cultureNestedKey {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.cultureNestedVal {
+  font-size: 13px;
+  color: var(--ink-mid);
+}
+.cultureObjList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cultureObjItem {
+  border-left: 2px solid var(--border);
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.cultureObjRow {
+  display: flex;
+  gap: 6px;
+  font-size: 13px;
+}
+.cultureObjKey {
+  font-weight: 600;
+  color: var(--ink-soft);
+  min-width: 60px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-top: 1px;
+}
+.cultureObjVal {
+  color: var(--ink-mid);
+}
+
 /* ── CLAN / SUB-GROUP GRID ── */
 .clanGrid {
   display: grid;

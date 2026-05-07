@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer";
@@ -54,6 +55,53 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
   const cultureEntries = Object.entries(culturalNotes).filter(
     ([, v]) => v != null && v !== "",
   );
+
+  function formatCultureKey(k: string): string {
+    return k.replace(/_/g, " ").replace(/^\w/, (c) => c.toUpperCase());
+  }
+
+  function renderCultureValue(v: unknown): React.ReactNode {
+    if (v == null) return null;
+    if (typeof v === "string" || typeof v === "number") return <>{String(v)}</>;
+    if (Array.isArray(v)) {
+      if (v.length === 0) return null;
+      if (v.every((item) => typeof item === "string" || typeof item === "number")) {
+        return (
+          <ul className={s.cultureList}>
+            {v.map((item, i) => <li key={i}>{String(item)}</li>)}
+          </ul>
+        );
+      }
+      // array of objects (e.g. notable_figures)
+      return (
+        <div className={s.cultureObjList}>
+          {(v as Record<string, unknown>[]).map((item, i) => (
+            <div key={i} className={s.cultureObjItem}>
+              {Object.entries(item).map(([ik, iv]) => (
+                <div key={ik} className={s.cultureObjRow}>
+                  <span className={s.cultureObjKey}>{formatCultureKey(ik)}</span>
+                  <span className={s.cultureObjVal}>{String(iv)}</span>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      );
+    }
+    if (typeof v === "object") {
+      return (
+        <div className={s.cultureNested}>
+          {Object.entries(v as Record<string, unknown>).map(([ik, iv]) => (
+            <div key={ik} className={s.cultureNestedRow}>
+              <span className={s.cultureNestedKey}>{formatCultureKey(ik)}</span>
+              <span className={s.cultureNestedVal}>{renderCultureValue(iv)}</span>
+            </div>
+          ))}
+        </div>
+      );
+    }
+    return <>{String(v)}</>;
+  }
 
   return (
     <>
@@ -159,8 +207,8 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
                 <div className={s.culturalTable}>
                   {cultureEntries.map(([k, v]) => (
                     <div key={k} className={s.culturalRow}>
-                      <div className={s.culturalLabel}>{k}</div>
-                      <div className={s.culturalVal}>{String(v)}</div>
+                      <div className={s.culturalLabel}>{formatCultureKey(k)}</div>
+                      <div className={s.culturalVal}>{renderCultureValue(v)}</div>
                     </div>
                   ))}
                 </div>
