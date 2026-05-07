@@ -35,7 +35,7 @@ export default async function EthnicGroupsPage({ searchParams }: Props) {
   if (params.lineage_system) apiParams.lineage_system = params.lineage_system;
   if (params.page) apiParams.page = params.page;
 
-  let groups: { id: number; name: string; endonym?: string; clan_count?: number; lineage_system_display?: string; countries?: { id: number; name: string }[] }[] = SAMPLE_ETHNIC_GROUPS;
+  let groups: { id: number; name: string; endonym?: string; clan_count?: number; sub_group_count?: number; lineage_system_display?: string; countries?: { id: number; name: string }[] }[] = SAMPLE_ETHNIC_GROUPS;
   let count = groups.length;
   let hasNext = false;
   let hasPrev = false;
@@ -63,17 +63,23 @@ export default async function EthnicGroupsPage({ searchParams }: Props) {
           <FilterChips paramName="lineage_system" options={LINEAGE_OPTS} />
         </Suspense>
         <div className={styles.grid}>
-          {groups.map((g) => (
-            <GroupCard
-              key={g.id}
-              id={g.id}
-              name={g.name}
-              endonym={g.endonym}
-              extra={`${g.clan_count ?? 0} clans · ${g.lineage_system_display ?? ""}`}
-              badge={g.countries?.[0]?.name}
-              href={`/ethnic-groups/${g.id}`}
-            />
-          ))}
+          {groups.map((g) => {
+            const stats = [];
+            if (g.sub_group_count) stats.push({ label: "sub-groups", value: g.sub_group_count });
+            if (g.clan_count) stats.push({ label: "clans", value: g.clan_count });
+            return (
+              <GroupCard
+                key={g.id}
+                id={g.id}
+                name={g.name}
+                endonym={g.endonym}
+                stats={stats}
+                extra={g.lineage_system_display || undefined}
+                badge={g.countries?.[0]?.name}
+                href={`/ethnic-groups/${g.id}`}
+              />
+            );
+          })}
         </div>
         {groups.length === 0 && <p className={styles.empty}>No ethnic groups found.</p>}
         <div className={styles.pagination}>
