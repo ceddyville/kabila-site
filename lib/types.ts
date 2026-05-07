@@ -75,6 +75,7 @@ export interface EthnicGroup extends EthnicGroupSummary {
   is_verified?: boolean;
   clan_count?: number;
   sub_group_count?: number;
+  sub_group_label?: string;
 }
 
 export interface ClanSummary {
