@@ -181,6 +181,43 @@ export default async function SubGroupDetailPage({ params }: Props) {
               </section>
             )}
 
+            {/* Self-identification */}
+            {(subGroup.endonym || subGroup.plural_endonym) && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>How they identify</div>
+                <div className={s.demonymTable}>
+                  {subGroup.endonym && (
+                    <div className={s.demonymRow}>
+                      <span className={s.demonymLabel}>Person (singular)</span>
+                      <span className={s.demonymValue}>{subGroup.endonym}</span>
+                    </div>
+                  )}
+                  {subGroup.plural_endonym && (
+                    <div className={s.demonymRow}>
+                      <span className={s.demonymLabel}>People (plural)</span>
+                      <span className={s.demonymValue}>{subGroup.plural_endonym}</span>
+                    </div>
+                  )}
+                  {subGroup.homeland && (
+                    <div className={s.demonymRow}>
+                      <span className={s.demonymLabel}>Homeland</span>
+                      <span className={s.demonymValue}>{subGroup.homeland}</span>
+                    </div>
+                  )}
+                  {langName && (
+                    <div className={s.demonymRow}>
+                      <span className={s.demonymLabel}>Language / dialect</span>
+                      <span className={s.demonymValue}>{langName}</span>
+                    </div>
+                  )}
+                </div>
+                <p className={s.demonymNote}>
+                  A member introduces themselves: <em>&ldquo;Ndi {subGroup.endonym ?? subGroup.name}&rdquo;</em>
+                  {subGroup.homeland ? <> &mdash; from the land of <em>{subGroup.homeland}</em></> : ""}.
+                </p>
+              </section>
+            )}
+
             {/* No content state */}
             {!subGroup.description && !subGroup.origin_story && children.length === 0 && clans.length === 0 && (
               <section className={s.section}>

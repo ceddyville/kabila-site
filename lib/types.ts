@@ -86,6 +86,8 @@ export interface ClanSummary {
 }
 
 export interface Clan extends ClanSummary {
+  plural_endonym?: string;
+  female_endonym?: string;
   alternate_names?: string[];
   ethnic_group?: EthnicGroupSummary;
   sub_group?: { id: number; name: string; endonym?: string; ethnic_group_name?: string };
@@ -113,6 +115,8 @@ export interface SubGroupSummary {
 }
 
 export interface SubGroup extends SubGroupSummary {
+  plural_endonym?: string;
+  homeland?: string;
   alternate_names?: string[];
   ethnic_group?: EthnicGroupSummary;
   group_type?: string;

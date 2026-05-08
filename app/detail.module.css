@@ -360,6 +360,49 @@
   color: var(--ink-mid);
 }
 
+/* ── SELF-IDENTIFICATION / DEMONYM TABLE ── */
+.demonymTable {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.demonymRow {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  border-bottom: 1px solid var(--border);
+}
+.demonymRow:last-child {
+  border-bottom: none;
+}
+.demonymLabel {
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  background: var(--bg2);
+}
+.demonymValue {
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink-dark);
+  font-family: var(--font-heading), serif;
+  letter-spacing: 0.01em;
+}
+.demonymNote {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0;
+  font-style: normal;
+}
+.demonymNote em {
+  color: var(--ink-mid);
+  font-style: italic;
+}
+
 /* ── CLAN / SUB-GROUP GRID ── */
 .clanGrid {
   display: grid;

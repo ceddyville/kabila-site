@@ -93,6 +93,39 @@ export default async function ClanDetailPage({ params }: Props) {
         <div className={s.contentGridNarrowSidebar}>
           {/* ── Main column ── */}
           <div>
+            {/* Self-identification */}
+            {(clan.endonym || clan.plural_endonym || clan.female_endonym) && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>How they identify</div>
+                <div className={s.demonymTable}>
+                  {clan.endonym && (
+                    <div className={s.demonymRow}>
+                      <span className={s.demonymLabel}>Man (singular)</span>
+                      <span className={s.demonymValue}>{clan.endonym}</span>
+                    </div>
+                  )}
+                  {clan.female_endonym && (
+                    <div className={s.demonymRow}>
+                      <span className={s.demonymLabel}>Woman (singular)</span>
+                      <span className={s.demonymValue}>{clan.female_endonym}</span>
+                    </div>
+                  )}
+                  {clan.plural_endonym && (
+                    <div className={s.demonymRow}>
+                      <span className={s.demonymLabel}>Clan members (plural)</span>
+                      <span className={s.demonymValue}>{clan.plural_endonym}</span>
+                    </div>
+                  )}
+                </div>
+                {(clan.endonym || clan.female_endonym) && (
+                  <p className={s.demonymNote}>
+                    A man says <em>&ldquo;Ndi {clan.endonym ?? clan.name}&rdquo;</em>
+                    {clan.female_endonym ? <>, a woman says <em>&ldquo;Ndi {clan.female_endonym}&rdquo;</em></> : ""}.
+                  </p>
+                )}
+              </section>
+            )}
+
             {/* Origin story */}
             {clan.origin_story && (
               <section className={s.section}>
