@@ -201,11 +201,37 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
               </section>
             )}
 
-            {cultureEntries.length > 0 && (
+            {/* Self-identification */}
+            {(group.endonym || (culturalNotes as Record<string, unknown>)?.endonyms) && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>How they identify</div>
+                <div className={s.demonymTable}>
+                  {(() => {
+                    const ens = (culturalNotes as Record<string, Record<string, string>>)?.endonyms;
+                    if (ens) {
+                      return Object.entries(ens).map(([k, v]) => (
+                        <div key={k} className={s.demonymRow}>
+                          <span className={s.demonymLabel}>{formatCultureKey(k)}</span>
+                          <span className={s.demonymValue}>{String(v)}</span>
+                        </div>
+                      ));
+                    }
+                    return group.endonym ? (
+                      <div className={s.demonymRow}>
+                        <span className={s.demonymLabel}>People (plural)</span>
+                        <span className={s.demonymValue}>{group.endonym}</span>
+                      </div>
+                    ) : null;
+                  })()}
+                </div>
+              </section>
+            )}
+
+            {cultureEntries.filter(([k]) => k !== "endonyms").length > 0 && (
               <section className={s.section}>
                 <div className={s.sectionHeading}>Cultural notes</div>
                 <div className={s.culturalTable}>
-                  {cultureEntries.map(([k, v]) => (
+                  {cultureEntries.filter(([k]) => k !== "endonyms").map(([k, v]) => (
                     <div key={k} className={s.culturalRow}>
                       <div className={s.culturalLabel}>{formatCultureKey(k)}</div>
                       <div className={s.culturalVal}>{renderCultureValue(v)}</div>

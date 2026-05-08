@@ -149,38 +149,6 @@ export default async function SubGroupDetailPage({ params }: Props) {
               </section>
             )}
 
-            {/* Child sub-groups (e.g. Tugen has sub-groups) */}
-            {children.length > 0 && (
-              <section className={s.section}>
-                <div className={s.sectionHeading}>Sub-groups ({children.length})</div>
-                <div className={s.clanGrid}>
-                  {children.map((child) => (
-                    <Link key={child.id} href={`/sub-groups/${child.id}`} className={s.clanCard}>
-                      <div className={s.clanCardName}>{child.name}</div>
-                      {child.endonym && <div className={s.clanCardEndonym}>{child.endonym}</div>}
-                      <span className={s.clanCardArrow}>→</span>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            )}
-
-            {/* Clans */}
-            {clans.length > 0 && (
-              <section className={s.section}>
-                <div className={s.sectionHeading}>Clans ({clans.length})</div>
-                <div className={s.clanGrid}>
-                  {clans.map((c) => (
-                    <Link key={c.id} href={`/clans/${c.id}`} className={s.clanCard}>
-                      <div className={s.clanCardName}>{c.name}</div>
-                      {c.endonym && <div className={s.clanCardEndonym}>{c.endonym}</div>}
-                      <span className={s.clanCardArrow}>→</span>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            )}
-
             {/* Self-identification */}
             {(subGroup.endonym || subGroup.plural_endonym) && (
               <section className={s.section}>
@@ -215,6 +183,38 @@ export default async function SubGroupDetailPage({ params }: Props) {
                   A member introduces themselves: <em>&ldquo;Ndi {subGroup.endonym ?? subGroup.name}&rdquo;</em>
                   {subGroup.homeland ? <> &mdash; from the land of <em>{subGroup.homeland}</em></> : ""}.
                 </p>
+              </section>
+            )}
+
+            {/* Child sub-groups (e.g. Tugen has sub-groups) */}
+            {children.length > 0 && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Sub-groups ({children.length})</div>
+                <div className={s.clanGrid}>
+                  {children.map((child) => (
+                    <Link key={child.id} href={`/sub-groups/${child.id}`} className={s.clanCard}>
+                      <div className={s.clanCardName}>{child.name}</div>
+                      {child.endonym && <div className={s.clanCardEndonym}>{child.endonym}</div>}
+                      <span className={s.clanCardArrow}>→</span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Clans */}
+            {clans.length > 0 && (
+              <section className={s.section}>
+                <div className={s.sectionHeading}>Clans ({clans.length})</div>
+                <div className={s.clanGrid}>
+                  {clans.map((c) => (
+                    <Link key={c.id} href={`/clans/${c.id}`} className={s.clanCard}>
+                      <div className={s.clanCardName}>{c.name}</div>
+                      {c.endonym && <div className={s.clanCardEndonym}>{c.endonym}</div>}
+                      <span className={s.clanCardArrow}>→</span>
+                    </Link>
+                  ))}
+                </div>
               </section>
             )}
 
