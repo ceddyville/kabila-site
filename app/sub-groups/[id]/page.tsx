@@ -40,6 +40,7 @@ export default async function SubGroupDetailPage({ params }: Props) {
   const groupId = subGroup.ethnic_group?.id;
   const langName = subGroup.language?.name;
   const parentName = subGroup.parent_name;
+  const parentId = subGroup.parent_id;
 
   return (
     <>
@@ -56,18 +57,28 @@ export default async function SubGroupDetailPage({ params }: Props) {
         ) : (
           <span>{groupName}</span>
         )}
+        {parentId && parentName && (
+          <>
+            <span className={s.breadcrumbSep}>›</span>
+            <Link href={`/sub-groups/${parentId}`}>{parentName}</Link>
+          </>
+        )}
         <span className={s.breadcrumbSep}>›</span>
-        <span className={s.breadcrumbCurrent}>{subGroup.name}</span>
+        <Link href={`/sub-groups/${numId}`} className={s.breadcrumbCurrent}>{subGroup.name}</Link>
       </div>
 
       {/* Dark hero */}
       <div className={s.hero}>
         <div className={s.heroInner}>
-          {groupId && (
+          {parentId ? (
+            <Link href={`/sub-groups/${parentId}`} className={s.heroBack}>
+              ← Back to {parentName}
+            </Link>
+          ) : groupId ? (
             <Link href={`/ethnic-groups/${groupId}`} className={s.heroBack}>
               ← Back to {groupName}
             </Link>
-          )}
+          ) : null}
           <div className={s.heroEyebrow}>
             <span className={s.eyebrowLine} />
             {subGroup.group_type_display ?? "Sub-group"}

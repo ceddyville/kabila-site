@@ -119,6 +119,7 @@ export interface SubGroup extends SubGroupSummary {
   homeland?: string;
   alternate_names?: string[];
   ethnic_group?: EthnicGroupSummary;
+  parent_id?: number;
   group_type?: string;
   group_type_display?: string;
   language?: { id: number; name: string };
