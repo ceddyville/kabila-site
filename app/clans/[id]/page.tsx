@@ -28,7 +28,7 @@ export default async function ClanDetailPage({ params }: Props) {
   }
 
   const groupName = clan.ethnic_group?.name ?? clan.sub_group?.ethnic_group_name ?? "";
-  const groupId = clan.ethnic_group?.id;
+  const groupId = clan.ethnic_group?.id ?? clan.sub_group?.ethnic_group_id;
   const subGroupName = clan.sub_group?.name;
   const subGroupId = clan.sub_group?.id;
   const subClans = clan.sub_clans ?? [];
@@ -59,7 +59,7 @@ export default async function ClanDetailPage({ params }: Props) {
           </>
         )}
         <span className={s.breadcrumbSep}>›</span>
-        <span className={s.breadcrumbCurrent}>{clan.name}</span>
+        <Link href={`/clans/${clan.id}`} className={s.breadcrumbCurrent}>{clan.name}</Link>
       </div>
 
       {/* Dark hero (compact) */}

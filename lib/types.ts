@@ -90,7 +90,7 @@ export interface Clan extends ClanSummary {
   female_endonym?: string;
   alternate_names?: string[];
   ethnic_group?: EthnicGroupSummary;
-  sub_group?: { id: number; name: string; endonym?: string; ethnic_group_name?: string };
+  sub_group?: { id: number; name: string; endonym?: string; ethnic_group_name?: string; ethnic_group_id?: number };
   parent_clan_name?: string;
   lineage_type?: string;
   lineage_type_display?: string;
