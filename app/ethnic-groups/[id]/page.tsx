@@ -256,7 +256,7 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
               </section>
             )}
 
-            {clans.length > 0 && (
+            {clans.length > 0 && topLevelSubGroups.length === 0 && (
               <section className={s.section}>
                 <div className={s.sectionHeading}>Clans ({clans.length})</div>
                 <div className={s.clanGrid}>
@@ -323,14 +323,18 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
                     <span className={s.sidebarVal}>{group.population_estimate.toLocaleString()}</span>
                   </div>
                 )}
-                <div className={s.sidebarRow}>
-                  <span className={s.sidebarKey}>Clans</span>
-                  <span className={s.sidebarVal}>{clans.length} documented</span>
-                </div>
-                <div className={s.sidebarRow}>
-                  <span className={s.sidebarKey}>Sub-groups</span>
-                  <span className={s.sidebarVal}>{topLevelSubGroups.length} documented</span>
-                </div>
+                {topLevelSubGroups.length === 0 && (
+                  <div className={s.sidebarRow}>
+                    <span className={s.sidebarKey}>Clans</span>
+                    <span className={s.sidebarVal}>{clans.length} documented</span>
+                  </div>
+                )}
+                {topLevelSubGroups.length > 0 && (
+                  <div className={s.sidebarRow}>
+                    <span className={s.sidebarKey}>Sub-groups</span>
+                    <span className={s.sidebarVal}>{topLevelSubGroups.length} documented</span>
+                  </div>
+                )}
               </div>
             </div>
 
