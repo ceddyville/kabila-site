@@ -117,10 +117,10 @@ export default async function ClanDetailPage({ params }: Props) {
                     </div>
                   )}
                 </div>
-                {(clan.endonym || clan.female_endonym) && (
+                {(clan.endonym || clan.female_endonym) && clan.ethnic_group?.identification_prefix && (
                   <p className={s.demonymNote}>
-                    A man says <em>&ldquo;Ndi {clan.endonym ?? clan.name}&rdquo;</em>
-                    {clan.female_endonym ? <>, a woman says <em>&ldquo;Ndi {clan.female_endonym}&rdquo;</em></> : ""}.
+                    A man says <em>&ldquo;{clan.ethnic_group.identification_prefix} {clan.endonym ?? clan.name}&rdquo;</em>
+                    {clan.female_endonym ? <>, a woman says <em>&ldquo;{clan.ethnic_group.identification_prefix} {clan.female_endonym}&rdquo;</em></> : ""}.
                   </p>
                 )}
               </section>

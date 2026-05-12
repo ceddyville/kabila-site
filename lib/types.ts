@@ -54,6 +54,7 @@ export interface EthnicGroupSummary {
   id: number;
   name: string;
   endonym?: string;
+  identification_prefix?: string;
 }
 
 export interface EthnicGroup extends EthnicGroupSummary {
