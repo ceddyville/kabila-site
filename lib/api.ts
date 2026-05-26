@@ -1,6 +1,7 @@
 import type {
   PaginatedResponse,
   EthnicGroup,
+  EthnicGroupSummary,
   Clan,
   Language,
   LanguageFamily,
