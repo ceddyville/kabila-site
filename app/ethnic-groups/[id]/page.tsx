@@ -202,7 +202,7 @@ export default async function EthnicGroupDetailPage({ params }: Props) {
             )}
 
             {/* Self-identification */}
-            {(group.endonym || (culturalNotes as Record<string, unknown>)?.endonyms) && (
+            {(!!group.endonym || !!(culturalNotes as Record<string, unknown>)?.endonyms) && (
               <section className={s.section}>
                 <div className={s.sectionHeading}>How they identify</div>
                 <div className={s.demonymTable}>
