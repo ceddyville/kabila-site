@@ -20,7 +20,7 @@ const ENDPOINTS = [
 ];
 
 export default function DocsPage() {
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE || "https://api.kabila.dev";
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE || "https://api.kabila.dev/api/v1";
 
   return (
     <>

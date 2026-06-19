@@ -190,10 +190,13 @@ export default async function SubGroupDetailPage({ params }: Props) {
                     </div>
                   )}
                 </div>
-                <p className={s.demonymNote}>
-                  A member introduces themselves: <em>&ldquo;Ndi {subGroup.endonym ?? subGroup.name}&rdquo;</em>
-                  {subGroup.homeland ? <> &mdash; from the land of <em>{subGroup.homeland}</em></> : ""}.
-                </p>
+                {subGroup.ethnic_group?.identification_prefix && (
+                  <p className={s.demonymNote}>
+                    A member introduces themselves: <em>&ldquo;{subGroup.ethnic_group.identification_prefix} {subGroup.endonym ?? subGroup.name}&rdquo;</em>
+                    {subGroup.homeland ? <> &mdash; from the land of <em>{subGroup.homeland}</em></> : ""}.
+                  </p>
+                )}
+
               </section>
             )}
 

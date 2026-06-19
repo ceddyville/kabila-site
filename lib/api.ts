@@ -13,7 +13,7 @@ import type {
   TraditionalAuthority,
 } from "./types";
 
-const API = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8001/api/v1";
+const API = process.env.NEXT_PUBLIC_API_BASE || "https://api.kabila.dev/api/v1";
 
 async function get<T>(path: string, params?: Record<string, string>): Promise<T> {
   const url = new URL(`${API}${path}`);
